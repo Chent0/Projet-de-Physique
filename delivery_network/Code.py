@@ -6,15 +6,9 @@ import matplotlib.pyplot as plt
 import random
 import networkx as nx #the networkX package helps us to manipulate graph
 
-N=100 #number of agents
-p=0.3 #link probability
-
-'we use the Erdos Renyi model to generate a random graph'
-G = nx.erdos_renyi_graph(N, p)#create a random graph
-print(G)
-nx.draw(G)
-plt.show()
-
+N=100
+p=0.02
+G = nx.erdos_renyi_graph(N, p)
 currencies=[i for i in range(N)]
 
 def iteration(n):
@@ -30,6 +24,18 @@ def iteration(n):
     return currencies
 
 def colors_currencies(list):
+    colors={}
+    list_colors=[2 for _ in range(N)]
+    for i in range (len(list)):
+        if list[i] not in colors:
+            colors[list[i]]=(random.random(), random.random(), random.random()) #the color is defined by a list of 3 elements
+        list_colors[i]=colors[list[i]]
+    return list_colors
     
 
+currencies=iteration(100)
+list_colors=colors_currencies(currencies)
+
+nx.draw(G, with_labels=True, node_color=list_colors)
+plt.show()
 
