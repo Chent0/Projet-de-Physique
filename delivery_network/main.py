@@ -6,10 +6,7 @@ from collections import Counter
 import matplotlib.pyplot as plt
 import random
 import networkx as nx
-from code import iteration, colors_currencies
-
-l=[1,4,4,3,5,5,4,2,3,1,5]
-l.most_common
+from code import colors_currencies
 
 N=100 #number of agents
 p=0.02 #link probability

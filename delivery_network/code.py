@@ -12,8 +12,7 @@ G = nx.erdos_renyi_graph(N, p)
 currencies=[i for i in range(N)]
 
 def simulation(n):
-    utility_evolution=[]
-    social_utility=[0]*N
+    U,utility_evolution= social_utility()
     for _ in range(n):
         agent= random.choice(list(G.nodes)) #choose a random agent
         neighbors = list(G.neighbors(agent)) #list of the agent's neighbors
@@ -28,9 +27,22 @@ def simulation(n):
             for neighbor in neighbors:
                 if currencies[neighbor]!=currencies[agent]:
                     agent_utility-=1 #agent utility= -card(neighbors that use a different currency)
-        social_utility[agent]=agent_utility
-        utility_evolution.append(social_utility)
-    return currencies,social_utility
+        U[agent]=agent_utility
+        utility_evolution.append(sum(U))
+    return currencies,utility_evolution
+
+def social_utility():
+    U=[0]*N
+    utility_evolution=[]
+    for agent in range(N):
+        neighbors= list(G.neighbors(agent))
+        agent_utility=0
+        for neighbor in neighbors:
+            if currencies[neighbor]!=currencies[agent]:
+                agent_utility-=1
+        U[agent]=agent_utility
+    return U,utility_evolution
+             
 
 def colors_currencies(list):
     colors={}
@@ -51,9 +63,3 @@ print(currencies)
 
 plt.plot([i for i in range(1000)],y)
 plt.show()
-
-'''il faut que l'utilité globale:=U vale -ungrandnombre initialement et pas 0
-commencer par compter le nombre pour chaque ind son nombre de voisins ne partageant pas la même monnaie
-sommer pour avoir l'utilité globale initiale
-peut être calculer deltaU pour calculer U à chaque itération (nécessite la monnaie de l'ind à t-1 et t...)
-je pense qu'il est préférable de modifier à chaque itération la liste des utilités individuelles puis sommer à la fin"
